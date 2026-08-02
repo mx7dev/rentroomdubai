@@ -22,8 +22,8 @@ No custom backend (Express/NestJS) was used on purpose: Supabase already provide
 ## Scope
 
 **In scope (current):**
-- Public listing page: browse available rooms with price, area, and amenities
-- Room detail view with photos
+- Public listing page: browse available rooms with photos, price, area, room type, and amenities
+- Photo storage and delivery via Supabase Storage, served through Next.js Image optimization
 - "Contact" button that opens WhatsApp with a pre-filled message (`wa.me` link) — no in-app chat, no payment processing
 
 **Out of scope (for now):**
@@ -35,15 +35,30 @@ No custom backend (Express/NestJS) was used on purpose: Supabase already provide
 
 ## Getting Started
 
-Install dependencies and run the development server:
+1. Install dependencies:
 
-```bash
-npm install
-npm run dev
-```
+   ```bash
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the app. Pages live in `app/`, routed by folder structure (Next.js App Router).
+2. Copy `.env.example` to `.env.local` and fill in your own Supabase project values (found in your Supabase dashboard under Settings → Data API / API Keys):
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+3. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+Open [http://localhost:3000](http://localhost:3000) to see the app. Pages live in `app/`, routed by folder structure (Next.js App Router). Reusable UI lives in `components/`, and the Supabase client and WhatsApp link helper live in `lib/`.
+
+## Database
+
+A single `rooms` table in Postgres (via Supabase) stores the listings, with Row Level Security enabled — public read access only, no write access from the client. Room photos live in a public Supabase Storage bucket (`room-photos`); the table stores their URLs in a `photo_urls` column.
 
 ## Deployment
 
-Deployed on [Vercel](https://vercel.com), with automatic deployments triggered on every push to `main`.
+Designed to deploy on [Vercel](https://vercel.com) with zero extra configuration, with automatic deployments on every push to `main`.
