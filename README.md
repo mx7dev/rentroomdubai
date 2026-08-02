@@ -1,10 +1,10 @@
 # RentRoomDubai
 
-A lightweight room-rental listings platform for Dubai, inspired by [Dubizzle](https://dubai.dubizzle.com/) — stripped down to just the essentials: browse rooms, see the price and details, and reach out directly on WhatsApp.
+A lightweight room-rental listings platform for Dubai — stripped down to just the essentials: browse rooms, see the price and details, and reach out directly on WhatsApp.
 
 ## Overview
 
-Dubizzle covers everything from cars to jobs to furniture, which makes it a lot to navigate for something as simple as "find a room to rent." This project focuses on a single use case: publishing room listings (price, area, amenities, photos) and letting an interested renter contact the lister in one click — no accounts, no forms, no noise.
+General classifieds sites cover everything from cars to jobs to furniture, which makes them a lot to navigate for something as simple as "find a room to rent." This project focuses on a single use case: publishing room listings (price, area, amenities, photos) and letting an interested renter contact the lister in one click — no accounts, no forms, no noise.
 
 It started as a way to show a real person (who helped me find a room when I moved to Dubai) what a simple listings site for her rooms could look like. If she wants to use it for real, she can plug in her own domain. Either way, it's built to be a real, working project for my portfolio — not a toy demo.
 
