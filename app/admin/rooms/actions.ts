@@ -2,6 +2,8 @@
 
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase-server'
+import { revalidatePath } from 'next/cache'
+
 
 export async function createRoom(formData: FormData) {
   const supabase = await createClient()
@@ -52,4 +54,27 @@ export async function createRoom(formData: FormData) {
   }
 
   redirect('/admin/rooms')
+}
+
+export async function deleteRoom(id: string) {
+  const supabase = await createClient()
+
+  const { data: room } = await supabase
+    .from('rooms')
+    .select('photo_urls')
+    .eq('id', id)
+    .single()
+
+  if (room?.photo_urls?.length) {
+    const fileNames = room.photo_urls.map((url: string) => url.split('/room-photos/')[1])
+    await supabase.storage.from('room-photos').remove(fileNames)
+  }
+
+  const { error } = await supabase.from('rooms').delete().eq('id', id)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  revalidatePath('/admin/rooms')
 }

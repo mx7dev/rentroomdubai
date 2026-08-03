@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-server'
+import { deleteRoom } from './actions'
+import { DeleteRoomButton } from './DeleteRoomButton'
+
 
 export default async function AdminRoomsPage() {
   const supabase = await createClient()
@@ -26,12 +29,16 @@ export default async function AdminRoomsPage() {
 
       <ul className="flex flex-col gap-2">
         {rooms.map((room) => (
-          <li key={room.id} className="border rounded-lg p-4 flex items-center justify-between">
+                    <li key={room.id} className="border rounded-lg p-4 flex items-center justify-between">
             <div>
               <p className="font-semibold">{room.title}</p>
               <p className="text-sm text-gray-500">{room.area} — AED {room.price}</p>
             </div>
+            <form action={deleteRoom.bind(null, room.id)}>
+              <DeleteRoomButton />
+            </form>
           </li>
+
         ))}
       </ul>
     </main>
