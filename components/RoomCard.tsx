@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { buildWhatsAppLink } from "@/lib/whatsapp"
+import Link from 'next/link'
 
 type Room = {
     id: string
@@ -15,7 +15,10 @@ type Room = {
 
 export default function RoomCard({ room }: { room: Room }) {
     return (
-        <div className="rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
+        <Link
+            href={`/rooms/${room.id}`}
+            className="block rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow"
+        >
             {room.photo_urls?.[0] && (
                 <div className="relative mb-3 h-48 w-full overflow-hidden rounded-lg">
                     <Image
@@ -41,14 +44,6 @@ export default function RoomCard({ room }: { room: Room }) {
                     ))}
                 </ul>
             )}
-            <a
-                href={buildWhatsAppLink(room)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-block w-full text-center rounded-lg bg-green-500 px-4 py-2 text-white font-medium hover:bg-green-600 transition-colors"
-            >
-                Contact via WhatsApp
-            </a>
-        </div>
+        </Link>
     )
 }
