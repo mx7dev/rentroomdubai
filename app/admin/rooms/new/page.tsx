@@ -1,5 +1,7 @@
 import { createRoom } from '../actions'
 import { SubmitButton } from '../SubmitButton'
+import { AMENITIES } from '@/lib/amenities'
+import { ROOM_TYPES } from '@/lib/room-types'
 
 export default function NewRoomPage() {
   return (
@@ -10,8 +12,24 @@ export default function NewRoomPage() {
         <textarea name="description" placeholder="Description" className="border rounded-lg px-3 py-2" rows={4} />
         <input type="number" name="price" placeholder="Price (AED/month)" className="border rounded-lg px-3 py-2" required />
         <input type="text" name="area" placeholder="Area (e.g. JVC, Marina)" className="border rounded-lg px-3 py-2" required />
-        <input type="text" name="room_type" placeholder="Room type (e.g. Studio, Shared Room)" className="border rounded-lg px-3 py-2" required />
-        <input type="text" name="amenities" placeholder="Amenities (comma-separated)" className="border rounded-lg px-3 py-2" />
+        <select name="room_type" className="border rounded-lg px-3 py-2" required defaultValue="">
+          <option value="" disabled>Room type</option>
+          {ROOM_TYPES.map((item) => (
+            <option key={item} value={item}>{item}</option>
+          ))}
+        </select>
+
+        <fieldset className="border rounded-lg px-3 py-2">
+          <legend className="px-1 text-sm text-gray-500">Amenities</legend>
+          <div className="grid grid-cols-2 gap-2">
+            {AMENITIES.map((item) => (
+              <label key={item} className="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="amenities" value={item} />
+                {item}
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <label className="flex items-center gap-2">
           <input type="checkbox" name="is_available" defaultChecked />

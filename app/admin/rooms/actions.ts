@@ -11,10 +11,7 @@ function parseRoomFormData(formData: FormData) {
     price: Number(formData.get('price')),
     area: formData.get('area') as string,
     room_type: formData.get('room_type') as string,
-    amenities: (formData.get('amenities') as string)
-      .split(',')
-      .map((item) => item.trim())
-      .filter(Boolean),
+    amenities: formData.getAll('amenities') as string[],
     is_available: formData.get('is_available') === 'on',
   }
 }

@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase-server'
 import { updateRoom } from '../../actions'
 import { SubmitButton } from '../../SubmitButton'
+import { AMENITIES } from '@/lib/amenities'
+import { ROOM_TYPES } from '@/lib/room-types'
 
 export default async function EditRoomPage({
   params,
@@ -24,8 +26,28 @@ export default async function EditRoomPage({
         <textarea name="description" defaultValue={room.description} className="border rounded-lg px-3 py-2" rows={4} />
         <input type="number" name="price" defaultValue={room.price} className="border rounded-lg px-3 py-2" required />
         <input type="text" name="area" defaultValue={room.area} className="border rounded-lg px-3 py-2" required />
-        <input type="text" name="room_type" defaultValue={room.room_type} className="border rounded-lg px-3 py-2" required />
-        <input type="text" name="amenities" defaultValue={room.amenities?.join(', ')} className="border rounded-lg px-3 py-2" />
+        <select name="room_type" defaultValue={room.room_type} className="border rounded-lg px-3 py-2" required>
+          {ROOM_TYPES.map((item) => (
+            <option key={item} value={item}>{item}</option>
+          ))}
+        </select>
+
+        <fieldset className="border rounded-lg px-3 py-2">
+          <legend className="px-1 text-sm text-gray-500">Amenities</legend>
+          <div className="grid grid-cols-2 gap-2">
+            {AMENITIES.map((item) => (
+              <label key={item} className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  name="amenities"
+                  value={item}
+                  defaultChecked={room.amenities?.includes(item)}
+                />
+                {item}
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <label className="flex items-center gap-2">
           <input type="checkbox" name="is_available" defaultChecked={room.is_available} />
