@@ -29,15 +29,24 @@ export default async function AdminRoomsPage() {
 
       <ul className="flex flex-col gap-2">
         {rooms.map((room) => (
-                    <li key={room.id} className="border rounded-lg p-4 flex items-center justify-between">
+          <li key={room.id} className="border rounded-lg p-4 flex items-center justify-between">
             <div>
               <p className="font-semibold">{room.title}</p>
               <p className="text-sm text-gray-500">{room.area} — AED {room.price}</p>
             </div>
-            <form action={deleteRoom.bind(null, room.id)}>
-              <DeleteRoomButton />
-            </form>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/admin/rooms/${room.id}/edit`}
+                className="rounded-lg border px-3 py-1.5 text-sm font-medium hover:bg-gray-50 transition-colors"
+              >
+                Edit
+              </Link>
+              <form action={deleteRoom.bind(null, room.id)}>
+                <DeleteRoomButton />
+              </form>
+            </div>
           </li>
+
 
         ))}
       </ul>

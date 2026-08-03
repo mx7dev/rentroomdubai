@@ -1,23 +1,27 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase-server'
 import { revalidatePath } from 'next/cache'
+import { createClient } from '@/lib/supabase-server'
 
+function parseRoomFormData(formData: FormData) {
+  return {
+    title: formData.get('title') as string,
+    description: formData.get('description') as string,
+    price: Number(formData.get('price')),
+    area: formData.get('area') as string,
+    room_type: formData.get('room_type') as string,
+    amenities: (formData.get('amenities') as string)
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean),
+    is_available: formData.get('is_available') === 'on',
+  }
+}
 
 export async function createRoom(formData: FormData) {
   const supabase = await createClient()
-
-  const title = formData.get('title') as string
-  const description = formData.get('description') as string
-  const price = Number(formData.get('price'))
-  const area = formData.get('area') as string
-  const roomType = formData.get('room_type') as string
-  const amenities = (formData.get('amenities') as string)
-    .split(',')
-    .map((item) => item.trim())
-    .filter(Boolean)
-  const isAvailable = formData.get('is_available') === 'on'
+  const fields = parseRoomFormData(formData)
 
   const photos = formData.getAll('photos') as File[]
   const photoUrls: string[] = []
@@ -39,13 +43,7 @@ export async function createRoom(formData: FormData) {
   }
 
   const { error } = await supabase.from('rooms').insert({
-    title,
-    description,
-    price,
-    area,
-    room_type: roomType,
-    amenities,
-    is_available: isAvailable,
+    ...fields,
     photo_urls: photoUrls,
   })
 
@@ -53,6 +51,20 @@ export async function createRoom(formData: FormData) {
     throw new Error(error.message)
   }
 
+  redirect('/admin/rooms')
+}
+
+export async function updateRoom(id: string, formData: FormData) {
+  const supabase = await createClient()
+  const fields = parseRoomFormData(formData)
+
+  const { error } = await supabase.from('rooms').update(fields).eq('id', id)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  revalidatePath('/admin/rooms')
   redirect('/admin/rooms')
 }
 
